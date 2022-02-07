@@ -18,7 +18,7 @@ abstract class Base implements FormatterInterface
         $this->dateFormat = $dateFormat;
     }
 
-    public function format(Entry $entry): string
+    public function formattedMessage(Entry $entry): string
     {
         if ($this->messageFormat) {
             $message = $this->messageFormat;

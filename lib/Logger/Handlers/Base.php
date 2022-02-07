@@ -17,7 +17,7 @@ abstract class Base implements LoggerHandlerInterface
 
     protected array $levels;
 
-    public function __construct($params = [])
+    public function __construct(array $params = [])
     {
         $this->isEnabled = $params['is_enabled'] ?? true;
         $this->formatter = $params['formatter'] ?? new DefaultFormatter();
@@ -35,9 +35,7 @@ abstract class Base implements LoggerHandlerInterface
             return;
         }
 
-        $entry = new Entry($entryMessage, (new $entryLevel));
-
-        $this->handle($this->formatter->format($entry));
+        $this->handle(new Entry($entryMessage, (new $entryLevel)));
     }
 
     protected function check($entryLevel): bool
@@ -67,5 +65,5 @@ abstract class Base implements LoggerHandlerInterface
         return true;
     }
 
-    abstract function handle($message);
+    abstract function handle(Entry $entry);
 }

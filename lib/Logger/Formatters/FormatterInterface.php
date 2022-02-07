@@ -6,5 +6,5 @@ use Logger\Entry;
 
 interface FormatterInterface
 {
-    public function format(Entry $entry): string;
+    public function formattedMessage(Entry $entry): string;
 }

@@ -2,7 +2,9 @@
 
 namespace Logger\Handlers;
 
+use Logger\Entry;
+
 interface LoggerHandlerInterface
 {
-    public function handle($message);
+    public function handle(Entry $entry);
 }

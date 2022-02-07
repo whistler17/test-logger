@@ -2,11 +2,13 @@
 
 namespace Logger\Handlers;
 
+use Logger\Entry;
+
 class FileHandler extends Base
 {
     protected string $fileName;
 
-    public function __construct($params = [])
+    public function __construct(array $params = [])
     {
         parent::__construct($params);
 
@@ -22,11 +24,11 @@ class FileHandler extends Base
         return parent::check($entryLevel);
     }
 
-    public function handle($message)
+    public function handle(Entry $entry)
     {
         $file = fopen($this->fileName, 'a+');
 
-        fwrite($file, $message);
+        fwrite($file, $this->formatter->formattedMessage($entry));
         fwrite($file, "\r\n");
 
         fclose($file);
