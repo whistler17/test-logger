@@ -2,7 +2,7 @@
 
 namespace Logger\Formatters;
 
-class LineFormatter extends Base
+class DefaultFormatter extends Base
 {
 
 }

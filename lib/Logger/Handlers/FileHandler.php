@@ -13,24 +13,22 @@ class FileHandler extends Base
         $this->fileName = $params['filename'] ?? '';
     }
 
-    protected function check(): bool
+    protected function check($entryLevel): bool
     {
         if (empty($this->fileName)) {
             return false;
         }
 
-        return parent::check();
+        return parent::check($entryLevel);
     }
 
-    public function handle($entryLevel, $entryMessage)
+    public function handle($message)
     {
-        $handle = fopen($this->fileName, 'a+');
+        $file = fopen($this->fileName, 'a+');
 
-        fwrite($handle, $entryMessage);
-        fwrite($handle, "\r\n");
+        fwrite($file, $message);
+        fwrite($file, "\r\n");
 
-        fwrite($handle, "\r\n");
-
-        fclose($handle);
+        fclose($file);
     }
 }

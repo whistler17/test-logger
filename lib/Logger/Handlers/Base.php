@@ -2,6 +2,8 @@
 
 namespace Logger\Handlers;
 
+use Logger\Entry;
+use Logger\Formatters\DefaultFormatter;
 use Logger\Formatters\FormatterInterface;
 use Logger\Traits\WithLogEvents;
 
@@ -18,7 +20,7 @@ abstract class Base implements LoggerHandlerInterface
     public function __construct($params = [])
     {
         $this->isEnabled = $params['is_enabled'] ?? true;
-        $this->formatter = $params['formatter'] ?? null;
+        $this->formatter = $params['formatter'] ?? new DefaultFormatter();
         $this->levels = $params['levels'] ?? [];
     }
 
@@ -29,32 +31,41 @@ abstract class Base implements LoggerHandlerInterface
 
     public function log(string $entryLevel, $entryMessage)
     {
-        if (!$this->check()) {
+        if (!$this->check($entryLevel)) {
             return;
         }
 
-        $entryMessage = $this->formatter ? $this->formatter->format($entryMessage) : $entryMessage;
+        $entry = new Entry($entryMessage, (new $entryLevel));
 
-        $this->handle($entryLevel, $entryMessage);
+        $this->handle($this->formatter->format($entry));
     }
 
-    protected function check(): bool
+    protected function check($entryLevel): bool
     {
-        if (!$this->isEnabled) {
+        if (!$this->isEnabled()) {
             return false;
         }
 
-        foreach ($this->levels as $level) {
-            list($code, $status) = $level;
+        if (!class_exists($entryLevel) || !$this->hasSuitableLevel($entryLevel)) {
+            return false;
         }
 
         return true;
     }
 
-    protected function isEnabled()
+    protected function isEnabled(): bool
     {
         return $this->isEnabled;
     }
 
-    abstract function handle($entryLevel, $entryMessage);
+    protected function hasSuitableLevel($entryLevel): bool
+    {
+        if (!empty($this->levels)) {
+            return in_array($entryLevel, $this->levels);
+        }
+
+        return true;
+    }
+
+    abstract function handle($message);
 }

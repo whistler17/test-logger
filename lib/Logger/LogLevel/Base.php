@@ -2,7 +2,7 @@
 
 namespace Logger\LogLevel;
 
-abstract class Base
+abstract class Base implements LogLevelInterface
 {
     protected string $code;
 

@@ -4,7 +4,7 @@ namespace Logger\Handlers;
 
 class SysLogHandler extends Base
 {
-    public function handle($entryLevel, $entryMessage)
+    public function handle($message)
     {
         // write to syslog
     }

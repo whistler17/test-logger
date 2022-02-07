@@ -4,7 +4,7 @@ namespace Logger\Handlers;
 
 class FakeHandler extends Base
 {
-    public function handle($entryLevel, $entryMessage)
+    public function handle($message)
     {
         // do nothing
     }

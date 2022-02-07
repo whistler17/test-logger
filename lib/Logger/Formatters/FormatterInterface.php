@@ -2,7 +2,9 @@
 
 namespace Logger\Formatters;
 
+use Logger\Entry;
+
 interface FormatterInterface
 {
-    public function format($text): string;
+    public function format(Entry $entry): string;
 }
